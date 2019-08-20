@@ -47,9 +47,10 @@ app.use(
     graphiql: true
   })
 );
-app.listen(port, () => 
-  console.log(`Node Graphql API listening on port ${port}!`
-));
-new DBConnection().create();
+
+app.listen(port, () => {
+  DBConnection.connect();
+  console.log(`Node Graphql API listening on port ${port}!`);
+})
 
 console.log('Hello Graphql Node API tutorial');

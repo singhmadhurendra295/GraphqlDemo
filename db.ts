@@ -1,16 +1,20 @@
-import * as mongoose from 'mongoose';
-export default class DBConnection {
-    mongoConnectionUrl: mongoose.DBConnection = "mongodb://localhost:27017/ts";
-    
-    create() {
-        mongoose.connect(this.mongoConnectionUrl, (err) => {
-            if (err) {
-                console.log(err.message);
-                console.log(err);
-            }
-            else {
-                console.log('Connected to MongoDb');
-            }
-        });
+import mongoose from 'mongoose';
+class DBConnection {
+    static mongooseInstance: any;
+    static mongooseConnection: mongoose.Connection;
+  
+    static connect(): mongoose.Connection {
+      const MONGODB_CONNECTION: string = 'mongodb://localhost:27017/typescriptgql';
+  
+      if (this.mongooseInstance) return this.mongooseInstance;
+  
+      this.mongooseConnection = mongoose.connection;
+      this.mongooseConnection.once('open', () => {
+        console.log('Connected to mongodb');
+      })
+      this.mongooseInstance = mongoose.connect(MONGODB_CONNECTION);
+      return this.mongooseInstance;
     }
-}
+  } 
+  
+  export default DBConnection;
